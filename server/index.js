@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const quest = require('./db')
 
 const app = express();
 
@@ -8,10 +9,6 @@ app.use(cors());
 
 app.use(express.json()); // When we want to be able to accept JSON.
 
-
-const {
-  quest
-} = require('./db')
 
 
 
@@ -43,13 +40,12 @@ app.get("/api/fortune", (req, res) => {
   // choose random compliment
   let randomIndex = Math.floor(Math.random() * compliments.length);
   let randomCompliment = compliments[randomIndex];
-
   res.status(200).send(randomCompliment);
   
 });
 
 
-app.post(`/api/quest`, quest)
+app.post(`/api/quest`, quest.quest)
 
 
 

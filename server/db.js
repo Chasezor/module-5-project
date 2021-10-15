@@ -24,8 +24,8 @@ module.exports = {
           if (err) throw err;
         })
         }
-    res.status(200).send(quests)
-    console.log(quests)
+    res.status(200).send(registeredQuest)
+    console.log(registeredQuest)
     console.log(messages)
 }
 }
