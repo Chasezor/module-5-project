@@ -1,3 +1,6 @@
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}
 body {
     background-image: url('https://cdn.pixabay.com/photo/2018/11/07/01/47/fantasy-3799471_1280.jpg');
   }
@@ -8,6 +11,16 @@ form{
     border-radius: 13px;
     padding: 10px;
     margin:10px;
+    opacity: 77%;
+}
+
+button{
+  padding: 10px;
+  margin: 10px;
+  border-radius: 13px;
+  font-weight: bold;
+  border: none;
+  box-shadow: 5px;
 }
 
 div{
