@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Back End Assessment</title>
+   <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="container">
+    <button id="complimentButton">Get a compliment</button>
+    <button id="randomFortuneButton">Random Fortune Cookie</button>
+    <form>
+      <h2>Add Fortune</h2>
+      <input 
+              type='text'
+              id="title"
+              placeholder="add a fate"/>
+
+
+     
+      <h2> Select Spirit Guide </h2>  
+      <select id="guide">
+      <option value = "Michael" selected> Michael</option>  
+      <option value = "Samael"> Samael </option>  
+      <option value = "Mercy"> Mercy</option>  
+      <option value = "Holly"> Holly</option>  
+      </select>
+
+
+
+       <section id="ratings-container">
+            <p>Starting Item:</p>
+            <div id="radio-container">
+                <label for="one">
+                    <input
+                        type="radio"
+                        name="ratings"
+                        value="Potion"
+                        id="one"/>
+                    Potion
+                </label>
+                <label for="two">
+                    <input
+                        type="radio"
+                        name="ratings"
+                        value="Sword"
+                        id="two"/>
+                    Sword
+                </label>
+                <label for="three">
+                    <input
+                        type="radio"
+                        name="ratings"
+                        value="Robe"
+                        id="three"/>
+                    Robe
+                </label>
+                <label for="four">
+                    <input
+                        type="radio"
+                        name="ratings"
+                        value="Chains"
+                        id="four"/>
+                   Chains
+                </label>
+            </div>
+        </section>
+         <button>Post</button>
+    </form>    
+
+
+    <section id="user-info"></section>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+    //variable area 
+
+
+      const form = document.querySelector('form')
+     const userContainer = document.querySelector('#user-info')
+
+
+    const baseURL = ' http://localhost:4000'
+  /// area for Axios calls 
+
+      document.getElementById("complimentButton").onclick = function () {
+        axios.get(`${baseURL}/api/compliment/`)
+            .then(function (response) {
+              const data = response.data;
+              alert(data);
+            });
+      };
+
+         document.getElementById("randomFortuneButton").onclick = function () {
+        axios.get(`${baseURL}/api/fortune/`)
+            .then(function (response) {
+              const data = response.data;
+              alert(data);
+            });
+      };
+
+    const quest = body => axios.post(`${baseURL}/api/quest/`, body).then(res => {
+    console.log(res.data)
+    createUserCard(res.data)
+
+    }).catch(err => {
+    console.log(err)
+    alert('Uh oh. Your request did not work.')
+    })
+
+//function area 
+    const check = () => {
+      console.log('The form was Sent')
+    }
+
+
+function submitHandler(e) {
+    e.preventDefault()
+
+    let title = document.querySelector('#title')
+    let guideForm = document.getElementById('guide')
+    let guide = guideForm.options[guideForm.selectedIndex].value;
+    let rating = document.querySelector('input[name="ratings"]:checked')
+
+    let bodyObj = {
+        fate: title.value,
+        guide,
+        item: rating.value 
+    }
+
+
+    //createUserCard(bodyObj)
+    quest(bodyObj)
+
+    title.value = ''
+    rating.checked = false
+}
+
+function createUserCard(data) {
+    userContainer.innerHTML = ''
+    const userCard = document.createElement('div')
+    userCard.classList.add('user-card')
+
+    userCard.innerHTML = 
+    `<p class="username">Your Fate: ${data.fate}</p>
+    <p class="first-name">Your Spirt Guide: ${data.guide}</p>
+    <p class="SItem">Your Item: ${data.item}</p>
+    `
+
+    userContainer.appendChild(userCard)
+}
+
+    form.addEventListener('submit', submitHandler)
+      
+      
+
+    </script>
+  </body>
+</html>
