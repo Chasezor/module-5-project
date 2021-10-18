@@ -4,9 +4,10 @@
     <title>Back End Assessment</title>
    <link rel="stylesheet" href="style.css">
   </head>
-  <body class="container">
+  <body class="container" id="container">
     <button id="complimentButton">Get a compliment</button>
     <button id="randomFortuneButton">Random Fortune Cookie</button>
+    <button id="getLevels">Get Maps</button>
     <form>
       <h2>Add Fortune</h2>
       <input 
@@ -65,7 +66,14 @@
         </section>
          <button>Post</button>
     </form>    
-
+    
+    <form id="form2">
+    <input 
+              type='text'
+              id="username"
+              placeholder="Enter Username"/>
+              <button>Enter name!</button>
+    </form>
 
     <section id="user-info"></section>
 
@@ -76,6 +84,7 @@
 
 
       const form = document.querySelector('form')
+      const form2 = document.querySelector('#form2')
      const userContainer = document.querySelector('#user-info')
 
 
@@ -98,11 +107,44 @@
             });
       };
 
+           document.getElementById("getLevels").onclick = function () {
+        axios.get(`${baseURL}/api/maps/`)
+            .then(function (response) {
+              const data = response.data;
+              alert(data);
+
+              if(data == "Sky")
+              {
+                document.getElementById('container').style.backgroundImage =  'url(https://www.wallpaperflare.com/static/594/819/760/fantasy-art-digital-art-cloudy-sky-wallpaper.jpg)'
+              }
+                if(data == "Earth")
+              {
+                  document.getElementById('container').style.backgroundImage = 'url(https://cdn2.wanderlust.co.uk/media/1037/forest-web.jpg?anchor=center&mode=crop&width=1200&height=0&rnd=132605629110000000)'
+    
+              }
+                if(data == "Hell")
+              {
+                 document.getElementById('container').style.backgroundImage = 'url(https://c4.wallpaperflare.com/wallpaper/812/357/212/artwork-camp-fire-fantasy-art-landscape-wallpaper-preview.jpg)'
+              }
+                if(data == "Sea")
+              {
+                 document.getElementById('container').style.backgroundImage = 'url(https://cdn.pixabay.com/photo/2018/11/07/01/47/fantasy-3799471_1280.jpg)'
+              }
+            });
+      };
+
     const quest = body => axios.post(`${baseURL}/api/quest/`, body).then(res => {
     console.log(res.data)
     createUserCard(res.data)
-
     }).catch(err => {
+    console.log(err)
+    alert('Uh oh. Your request did not work.')
+    })
+
+    const quest2 = body => axios.post(`${baseURL}/api/player/`, body).then(res => {
+    console.log(res.data)
+    createUserCard2(res.data)
+     }).catch(err => {
     console.log(err)
     alert('Uh oh. Your request did not work.')
     })
@@ -131,8 +173,36 @@ function submitHandler(e) {
     //createUserCard(bodyObj)
     quest(bodyObj)
 
-    title.value = ''
-    rating.checked = false
+   // title.value = ''
+   // rating.checked = false
+}
+
+function submitHandler2(e) {
+    e.preventDefault()
+
+    let username = document.querySelector('#username')
+
+    let bodyObj = {
+        username: username.value,
+    }
+
+
+    //createUserCard(bodyObj)
+    quest2(bodyObj)
+
+   // title.value = ''
+}
+
+function createUserCard2(data) {
+    userContainer.innerHTML = ''
+    const userCard = document.createElement('div')
+    userCard.classList.add('user-card')
+
+    userCard.innerHTML = 
+    `<p class="username">Your Fate: ${data.username}</p>
+    `
+
+    userContainer.appendChild(userCard)
 }
 
 function createUserCard(data) {
@@ -149,7 +219,8 @@ function createUserCard(data) {
     userContainer.appendChild(userCard)
 }
 
-    form.addEventListener('submit', submitHandler)
+    form.addEventListener('submit', submitHandler);
+    form2.addEventListener('submit', submitHandler2);
       
       
 

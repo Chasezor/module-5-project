@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const quest = require('./db')
+const player = require('./players')
+
 
 const app = express();
 
@@ -45,7 +47,27 @@ app.get("/api/fortune", (req, res) => {
 });
 
 
+app.get("/api/maps", (req, res) => {
+  const maps = 
+  [        "Sea",
+					 "Earth.",
+					 "Hell",
+           "Sky",
+  ];
+
+  // choose random compliment
+  let randomIndex = Math.floor(Math.random() * maps.length);
+  let randomMap = maps[randomIndex];
+  res.status(200).send(randomMap);
+  
+});
+
+
+
 app.post(`/api/quest`, quest.quest)
+
+app.post(`/api/player`, player.player)
+
 
 
 
